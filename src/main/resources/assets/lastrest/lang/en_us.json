@@ -1,0 +1,8 @@
+{
+  "block.lastrest.grave": "Gravestone",
+  "item.lastrest.grave": "Gravestone",
+  "itemGroup.lastrest": "LastRest",
+  "key.categories.lastrest": "LastRest",
+  "key.lastrest.next_page": "Next grave page",
+  "key.lastrest.previous_page": "Previous grave page"
+}
