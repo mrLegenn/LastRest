@@ -5,6 +5,7 @@ import com.mrlegenn.lastrest.data.GraveSavedData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -27,7 +28,7 @@ public final class NetworkHandler {
 
     public static void register() {
         if (registered) return;
-        CHANNEL.messageBuilder(GraveSyncMessage.class, 0)
+        CHANNEL.messageBuilder(GraveSyncMessage.class, 0, NetworkDirection.PLAY_TO_CLIENT)
                 .encoder(GraveSyncMessage::encode)
                 .decoder(GraveSyncMessage::decode)
                 .consumerMainThread(GraveSyncMessage::handle)
