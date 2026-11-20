@@ -1,6 +1,5 @@
 package com.mrlegenn.lastrest.block;
 
-import com.mrlegenn.lastrest.LastRest;
 import com.mrlegenn.lastrest.data.GraveRecord;
 import com.mrlegenn.lastrest.data.GraveSavedData;
 import com.mrlegenn.lastrest.network.NetworkHandler;
@@ -10,15 +9,35 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.server.level.ServerPlayer;
 
 public class GraveBlock extends Block {
+    private static final VoxelShape SHAPE = Shapes.or(
+            Block.box(2, 0, 2, 14, 3, 14),
+            Block.box(3, 3, 4, 13, 14, 12),
+            Block.box(4, 14, 4, 12, 16, 12)
+    );
+
     public GraveBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -79,7 +98,7 @@ public class GraveBlock extends Block {
             }
         }
 
-        // Second pass: put remaining items in empty main-inventory slots (0-35).
+        // Second pass: place remaining stacks in empty main-inventory slots.
         for (ItemStack stored : grave.items()) {
             if (stored.isEmpty()) continue;
 
