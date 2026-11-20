@@ -3,7 +3,6 @@ package com.mrlegenn.lastrest.client;
 import com.mrlegenn.lastrest.LastRest;
 import com.mrlegenn.lastrest.network.GraveSyncMessage;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
