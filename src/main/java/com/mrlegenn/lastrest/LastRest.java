@@ -2,6 +2,7 @@ package com.mrlegenn.lastrest;
 
 import com.mrlegenn.lastrest.block.GraveBlock;
 import com.mrlegenn.lastrest.network.NetworkHandler;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -27,7 +28,7 @@ public class LastRest {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     public static final DeferredRegister<CreativeModeTab> TABS =
-            DeferredRegister.create(ForgeRegistries.CREATIVE_MODE_TABS, MOD_ID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
 
     public static final RegistryObject<Block> GRAVE_BLOCK = BLOCKS.register(
             "grave",
