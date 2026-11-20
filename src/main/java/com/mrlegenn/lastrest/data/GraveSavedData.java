@@ -165,7 +165,10 @@ public class GraveSavedData extends SavedData {
     private void removeOrScheduleCleanup(MinecraftServer server, ResourceLocation dimension, BlockPos pos) {
         ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, dimension);
         ServerLevel level = server.getLevel(key);
-        if (level == null) return;
+        if (level == null) {
+            pendingCleanup.add(new PendingCleanup(dimension, pos));
+            return;
+        }
 
         if (level.hasChunkAt(pos)) {
             if (level.getBlockState(pos).is(LastRest.GRAVE_BLOCK.get())) {
