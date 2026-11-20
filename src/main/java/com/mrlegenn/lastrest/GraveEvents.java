@@ -64,6 +64,13 @@ public class GraveEvents {
     }
 
     @SubscribeEvent
+    public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && player.getServer() != null) {
+            NetworkHandler.syncPlayer(player);
+        }
+    }
+
+    @SubscribeEvent
     public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.getEntity() instanceof ServerPlayer player && player.getServer() != null) {
             NetworkHandler.syncPlayer(player);
