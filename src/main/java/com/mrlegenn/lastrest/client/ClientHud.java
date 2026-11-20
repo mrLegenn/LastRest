@@ -3,9 +3,11 @@ package com.mrlegenn.lastrest.client;
 import com.mrlegenn.lastrest.LastRest;
 import com.mrlegenn.lastrest.network.GraveSyncMessage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.BossHealthOverlay;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,6 +35,8 @@ public final class ClientHud {
 
     @SubscribeEvent
     public static void onRender(RenderGuiOverlayEvent.Post event) {
+        if (event.getOverlay() != VanillaGuiOverlay.HOTBAR.type()) return;
+
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null) return;
 
@@ -68,9 +72,8 @@ public final class ClientHud {
             GraveSyncMessage.Marker marker = markers.get(i);
             double dx = marker.position().getX() + 0.5 - minecraft.player.getX();
             double dz = marker.position().getZ() + 0.5 - minecraft.player.getZ();
-            double distance = Math.sqrt(dx * dx
-                    + Math.pow(marker.position().getY() + 0.5 - minecraft.player.getY(), 2)
-                    + dz * dz);
+            double dy = marker.position().getY() + 0.5 - minecraft.player.getY();
+            double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
             double bearing = Math.toDegrees(Math.atan2(-dx, dz));
             float difference = Mth.wrapDegrees((float) (bearing - minecraft.player.getYRot()));
