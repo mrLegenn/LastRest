@@ -41,6 +41,8 @@ public class GraveEvents {
         if (captured.isEmpty()) return;
 
         BlockPos gravePos = findPlacement(level, player.blockPosition());
+        // If no safe place exists, let vanilla handle the drops rather than overwrite the world.
+        if (gravePos == null) return;
         player.getInventory().clearContent();
 
         level.setBlockAndUpdate(gravePos, LastRest.GRAVE_BLOCK.get().defaultBlockState());
@@ -106,7 +108,27 @@ public class GraveEvents {
             if (level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP)) return pos;
         }
 
-        // Last resort: preserve the items in saved data even in unusual terrain.
-        return origin;
+        // Search a small local volume for a replaceable space with a sturdy floor.
+        // If the area is completely enclosed, return null so vanilla death drops remain intact.
+        for (int radius = 1; radius <= 4; radius++) {
+            for (int yOffset = -1; yOffset <= 4; yOffset++) {
+                int y = origin.getY() + yOffset;
+                if (y < level.getMinBuildHeight() || y >= level.getMaxBuildHeight()) continue;
+
+                for (int dx = -radius; dx <= radius; dx++) {
+                    for (int dz = -radius; dz <= radius; dz++) {
+                        if (Math.max(Math.abs(dx), Math.abs(dz)) != radius) continue;
+
+                        BlockPos candidate = origin.offset(dx, yOffset, dz);
+                        BlockPos floor = candidate.below();
+                        if (level.getBlockState(candidate).canBeReplaced()
+                                && level.getBlockState(floor).isFaceSturdy(level, floor, Direction.UP)) {
+                            return candidate;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
